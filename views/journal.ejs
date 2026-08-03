@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal | DevBase</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+
+
+  <body>
+
+    <header>
+      <div class="header">
+        <div class="wrapper">
+
+          <div class="logo">
+            <a href="/dashboard">
+              <img src="images/devbase-logo.png" alt="DevBase Logo">
+            </a>
+          </div>
+
+          <nav>
+            <ul>
+              <li><a href="/dashboard" target="_blank">Home</a></li>
+              <li><a href="/goals" target="_blank">Goals</a></li>
+              <li><a href="/opportunities" target="_blank">Opportunities</a></li>
+              <li><a href="/projects" target="_blank">Projects</a></li>
+              <li><a href="/resumes" target="_blank">Resumes</a></li>
+              <li><a href="/ideas" target="_blank">Ideas</a></li>
+              <li><a href="/journal" target="_blank">Journal</a></li>
+              <li><a href="/hub" target="_blank">Hub</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </nav>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="journal">
+      <div class="wrapper">
+
+        <div class="page-heading">
+          <h1>Journal</h1>
+          <p>
+            Reflect on your learning journey, record challenges, and celebrate your progress one day at a time.
+          </p>
+        </div>
+
+        <div class="quote-card">
+          <h3>Quote of the Day</h3>
+          <p>
+            "Consistency beats intensity."
+          </p>
+        </div>
+
+        <div class="journal-overview">
+          <div class="overview-card">
+            <h2><%= totalEntries %></h2>
+            <p>Total Entries</p>
+          </div>
+          <div class="overview-card">
+            <h2><%= thisMonth %></h2>
+            <p>This Month</p>
+          </div>
+          <div class="overview-card">
+            <h2>
+              <%= lastEntry ? lastEntry.createdAt.toLocaleDateString("en-GB") : "--" %>
+            </h2>
+            <p>Last Entry</p>
+          </div>
+          <div class="overview-card">
+            <h2><%= journals.length %></h2>
+            <p>Visible Entries</p>
+          </div>
+        </div>
+
+        <div class="journal-search">
+          <form action="/journal" method="GET">
+            <input type="text" name="search" placeholder="Search journal..." value="<%= search || '' %>" >
+            <button type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
+        </div>
+
+        <div class="journal-editor">
+          <h2>New Journal Entry</h2>
+          <form action="/journal" method="POST" class="journal-form">
+            <input type="text" name="title" placeholder="Entry Title" required >
+            <select name="mood" required>
+              <option value="">Select Mood</option>
+              <option value="Excellent">😊 Excellent</option>
+              <option value="Good">😄 Good</option>
+              <option value="Average">😐 Average</option>
+              <option value="Bad">😞 Bad</option>
+            </select>
+            <textarea
+              name="content"
+              rows="7"
+              placeholder="Write about what you learned today..."
+              required
+            ></textarea>
+            <button type="submit" class="save-entry-btn" >
+              <i class="fa-solid fa-book"></i>
+              Save Entry
+            </button>
+          </form>
+        </div>
+
+        <h2 class="recent-heading">
+          Entries
+        </h2>
+
+        <div class="journal-list">
+
+          <% if(journals.length===0){ %>
+          <div class="empty-journal">
+            <i class="fa-solid fa-book-open"></i>
+            <h2>No Journal Entries Yet</h2>
+            <p>
+              Write your first journal entry above.
+            </p>
+          </div>
+          <% } %>
+
+          <% journals.forEach(journal=>{ %>
+          <div class="journal-card">
+            <div class="journal-card-header">
+              <div>
+                <h3>
+                  <%= journal.title %>
+                </h3>
+                <p class="entry-date">
+                  <%= journal.createdAt.toLocaleDateString("en-GB",{
+                    day:"numeric",
+                    month:"long",
+                    year:"numeric"
+                  }) %>
+                </p>
+              </div>
+              <span class="mood-badge">
+                <% if(journal.mood==="Excellent"){ %>
+                  😊 Excellent
+                <% } else if(journal.mood==="Good"){ %>
+                  😄 Good
+                <% } else if(journal.mood==="Average"){ %>
+                  😐 Average
+                <% } else{ %>
+                  😞 Bad
+                <% } %>
+              </span>
+            </div>
+            <p class="journal-content">
+              <%= journal.content %>
+            </p>
+            <div class="journal-buttons">
+              <a href="/journal/delete/<%= journal._id %>" class="delete-btn">
+                <i class="fa-solid fa-trash"></i>
+                Delete
+              </a>
+            </div>
+          </div>
+          <% }) %>
+        </div>  
+
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer">
+        <div class="wrapper">
+
+          <div class="fbox">
+            <h2>DevBase</h2>
+            <p>
+              DevBase is your complete developer workspace designed to help
+              you organize projects, manage opportunities, track goals,
+              store resumes, capture ideas, and document your growth—all in one place.
+            </p>
+          </div>
+
+          <div class="fbox">
+            <h3>Workspace</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li><a href="#"><i class="fa-solid fa-briefcase"></i> Opportunities</a></li>
+                <li><a href="#"><i class="fa-solid fa-folder-open"></i> Projects</a></li>
+                <li><a href="#"><i class="fa-solid fa-file-lines"></i> Resumes</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Resources</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-lightbulb"></i> Ideas</a></li>
+                <li><a href="#"><i class="fa-solid fa-book-open"></i> Journal</a></li>
+                <li><a href="#"><i class="fa-solid fa-link"></i> Developer Hub</a></li>
+                <li><a href="#"><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
+                <li><a href="#"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Connect</h3>
+            <div class="fbox3">
+              <a href="#"><i class="fa-brands fa-github"></i></a>
+              <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#"><i class="fa-solid fa-globe"></i></a>
+            </div>
+            <p class="footer-tagline">
+              Build. Track. Grow.
+            </p>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+
+      <div class="copy">
+        <div class="wrapper">
+    
+          <div class="copyright">
+            <p>
+              © 2026 DevBase. Designed & Developed by Smaranika.
+            </p>
+          </div>
+
+          <div class="policy">
+            <a href="#">Privacy Policy</a>
+            <p>&#124;</p>
+            <a href="#">Terms & Conditions</a>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>

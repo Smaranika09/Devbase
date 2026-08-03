@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idea Vault | DevBase</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+
+
+  <body>
+
+    <header>
+      <div class="header">
+        <div class="wrapper">
+
+          <div class="logo">
+            <a href="/dashboard">
+              <img src="images/devbase-logo.png" alt="DevBase Logo">
+            </a>
+          </div>
+
+          <nav>
+            <ul>
+              <li><a href="/dashboard" target="_blank">Home</a></li>
+              <li><a href="/goals" target="_blank">Goals</a></li>
+              <li><a href="/opportunities" target="_blank">Opportunities</a></li>
+              <li><a href="/projects" target="_blank">Projects</a></li>
+              <li><a href="/resumes" target="_blank">Resumes</a></li>
+              <li><a href="/ideas" target="_blank">Ideas</a></li>
+              <li><a href="/journal" target="_blank">Journal</a></li>
+              <li><a href="/hub" target="_blank">Hub</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </nav>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="idea-vault">
+      <div class="wrapper">
+
+        <div class="page-heading">
+          <h1>Idea Vault</h1>
+          <p>
+            Capture every project, startup, hackathon, business, or research idea before inspiration fades away.
+          </p>
+        </div>
+
+        <div class="idea-overview">
+          <div class="overview-card">
+            <h2><%= totalIdeas %></h2>
+            <p>Total Ideas</p>
+          </div>
+          <div class="overview-card">
+            <h2><%= pinnedIdeas %></h2>
+            <p>Pinned</p>
+          </div>
+          <div class="overview-card">
+            <h2><%= recentIdeas %></h2>
+            <p>Recent</p>
+          </div>
+          <div class="overview-card">
+            <h2><%= categories %></h2>
+            <p>Categories</p>
+          </div>
+        </div>
+
+        <div class="idea-search-section">
+          <form action="/ideas" method="GET">
+            <input type="text" name="search" placeholder="Search ideas..." value="<%= search || '' %>">
+            <button type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
+        </div>
+
+        <div class="add-idea-section">
+          <h2>Add New Idea</h2>
+          <form action="/ideas" method="POST" class="idea-form">
+            <input type="text" name="title" placeholder="Idea Title" required>
+            <select name="category" required >
+              <option value="">Category</option>
+              <option value="Project">Project</option>
+              <option value="Startup">Startup</option>
+              <option value="Hackathon">Hackathon</option>
+              <option value="Business">Business</option>
+              <option value="Research">Research</option>
+            </select>
+
+            <select name="difficulty" required>
+              <option value="">Difficulty</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+            <input type="text" name="tags" placeholder="AI, Node.js, MongoDB...">
+            <textarea name="description" rows="5" placeholder="Describe your idea..." required></textarea>
+            <button type="submit" class="add-idea-btn" >
+              <i class="fa-solid fa-plus"></i>
+              Add Idea
+            </button>
+          </form>
+        </div>
+
+        <div class="idea-list">
+
+          <% if(ideas.length===0){ %>
+          <div class="empty-idea">
+            <i class="fa-solid fa-lightbulb"></i>
+            <h2>No Ideas Yet</h2>
+            <p>
+              Capture your first idea above.
+            </p>
+          </div>
+          <% } %>
+
+          <% ideas.forEach(idea=>{ %>
+          <div class="idea-card">
+            <div class="idea-header">
+              <div>
+                <h3><%= idea.title %></h3>
+                <span class="category-tag">
+                  <%= idea.category %>
+                </span>
+              </div>
+              <a href="/ideas/pin/<%= idea._id %>" class="pin-btn">
+                <% if(idea.pinned){ %>
+                  <i class="fa-solid fa-thumbtack"></i>
+                <% } else{ %>
+                  <i class="fa-solid fa-thumbtack pin-off"></i>
+                <% } %>
+              </a>
+            </div>
+
+            <div class="idea-tags">
+              <% idea.tags.forEach(tag=>{ %>
+                <span>
+                  <%= tag %>
+                </span>
+              <% }) %>
+            </div>
+            <div class="idea-info">
+              <p>
+                <strong>Difficulty :</strong>
+                <span class="difficulty <%= idea.difficulty.toLowerCase() %>">
+                  <%= idea.difficulty %>
+                </span>
+              </p>
+            </div>
+            <p class="idea-description">
+              <%= idea.description %>
+            </p>
+            <div class="idea-buttons">
+              <a href="/ideas/delete/<%= idea._id %>" class="delete-btn">
+                <i class="fa-solid fa-trash"></i>
+                Delete
+              </a>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+
+      </div>
+	  </section>
+    
+    <footer>
+      <div class="footer">
+        <div class="wrapper">
+
+          <div class="fbox">
+            <h2>DevBase</h2>
+            <p>
+              DevBase is your complete developer workspace designed to help
+              you organize projects, manage opportunities, track goals,
+              store resumes, capture ideas, and document your growth—all in one place.
+            </p>
+          </div>
+
+          <div class="fbox">
+            <h3>Workspace</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li><a href="#"><i class="fa-solid fa-briefcase"></i> Opportunities</a></li>
+                <li><a href="#"><i class="fa-solid fa-folder-open"></i> Projects</a></li>
+                <li><a href="#"><i class="fa-solid fa-file-lines"></i> Resumes</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Resources</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-lightbulb"></i> Ideas</a></li>
+                <li><a href="#"><i class="fa-solid fa-book-open"></i> Journal</a></li>
+                <li><a href="#"><i class="fa-solid fa-link"></i> Developer Hub</a></li>
+                <li><a href="#"><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
+                <li><a href="#"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Connect</h3>
+            <div class="fbox3">
+              <a href="#"><i class="fa-brands fa-github"></i></a>
+              <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#"><i class="fa-solid fa-globe"></i></a>
+            </div>
+            <p class="footer-tagline">
+              Build. Track. Grow.
+            </p>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+
+      <div class="copy">
+        <div class="wrapper">
+    
+          <div class="copyright">
+            <p>
+              © 2026 DevBase. Designed & Developed by Smaranika.
+            </p>
+          </div>
+
+          <div class="policy">
+            <a href="#">Privacy Policy</a>
+            <p>&#124;</p>
+            <a href="#">Terms & Conditions</a>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>

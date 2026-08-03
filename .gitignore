@@ -1,0 +1,13 @@
+# Environment
+.env
+
+# Node Modules
+node_modules/
+
+# Ignore uploaded files
+uploads/resumes/*
+uploads/projects/*
+
+# Keep folders
+!uploads/resumes/.gitkeep
+!uploads/projects/.gitkeep

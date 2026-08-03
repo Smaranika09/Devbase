@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | DevBase</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+
+
+  <body>
+
+    <header>
+      <div class="header">
+        <div class="wrapper">
+
+          <div class="logo">
+            <a href="/dashboard">
+              <img src="images/devbase-logo.png" alt="DevBase Logo">
+            </a>
+          </div>
+
+          <nav>
+            <ul>
+              <li><a href="/dashboard" target="_blank">Home</a></li>
+              <li><a href="/goals" target="_blank">Goals</a></li>
+              <li><a href="/opportunities" target="_blank">Opportunities</a></li>
+              <li><a href="/projects" target="_blank">Projects</a></li>
+              <li><a href="/resumes" target="_blank">Resumes</a></li>
+              <li><a href="/ideas" target="_blank">Ideas</a></li>
+              <li><a href="/journal" target="_blank">Journal</a></li>
+              <li><a href="/hub" target="_blank">Hub</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </nav>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="dashboard-section">
+      <div class="wrapper">
+        <div class="dashboard-container">
+
+          <div class="dashboard-left">
+            <span class="dashboard-tag">
+              Developer Workspace
+            </span>
+            <h1>Hello, <%= user.name %> 👋</h1>
+            <p>
+              Welcome back to DevBase.
+              Everything you need to organize your projects,
+              opportunities, ideas and goals is right here.
+            </p>
+          </div>
+
+          <div class="profile-card">
+
+            <div class="profile-top">
+              <img src="/images/avatar.png" alt="Profile">
+              <h3><%= user.name %></h3>
+              <p><%= user.targetRole %></p>
+              <p class="profile-college">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <%= user.college %>
+              </p>
+              <p class="profile-grad">
+                <i class="fa-solid fa-calendar"></i>
+                Class of <%= user.graduationYear %>
+              </p>
+              <p class="profile-bio">
+                <%= user.bio %>
+              </p>
+            </div>
+
+            <div class="profile-skills">
+              <h4>Skills</h4>
+              <div class="skill-pills">
+                <% if(user.skills && user.skills.length > 0){ %>
+                    <% user.skills.forEach(skill => { %>
+                      <span><%= skill %></span>
+                    <% }) %>
+                  <% } else{ %>
+                    <span>No skills added</span>
+                  <% } %>
+              </div>
+            </div>
+
+            <div class="profile-stats">
+              <div class="stat-box">
+                <h4><%= totalGoals %></h4>
+                <span>Goals</span>
+              </div>
+              <div class="stat-box">
+                <h4><%= totalOpportunities %></h4>
+                <span>Opportunities</span>
+              </div>
+              <div class="stat-box">
+                <h4><%= totalProjects %></h4>
+                <span>Projects</span>
+              </div>
+              <div class="stat-box">
+                <h4><%= totalResumes %></h4>
+                <span>Resumes</span>
+              </div>
+              <div class="stat-box">
+                <h4><%= totalIdeas %></h4>
+                <span>Ideas</span>
+              </div>
+            </div>
+
+            <div class="focus-timer">
+              <h4>Focus Timer</h4>
+              <div class="timer-display" id="timer">
+                00 : 00 : 00
+              </div>
+              <div class="timer-buttons">
+                <button class="start-btn">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+                <button class="pause-btn">
+                  <i class="fa-solid fa-pause"></i>
+                </button>
+                <button class="stop-btn">
+                  <i class="fa-solid fa-stop"></i>
+                </button>
+              </div>
+            </div>
+
+            <a href="/profile-setup" class="edit-profile-btn">
+              Edit Profile
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+    <footer>
+      <div class="footer">
+        <div class="wrapper">
+
+          <div class="fbox">
+            <h2>DevBase</h2>
+            <p>
+              DevBase is your complete developer workspace designed to help
+              you organize projects, manage opportunities, track goals,
+              store resumes, capture ideas, and document your growth—all in one place.
+            </p>
+          </div>
+
+          <div class="fbox">
+            <h3>Workspace</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li><a href="#"><i class="fa-solid fa-briefcase"></i> Opportunities</a></li>
+                <li><a href="#"><i class="fa-solid fa-folder-open"></i> Projects</a></li>
+                <li><a href="#"><i class="fa-solid fa-file-lines"></i> Resumes</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Resources</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-lightbulb"></i> Ideas</a></li>
+                <li><a href="#"><i class="fa-solid fa-book-open"></i> Journal</a></li>
+                <li><a href="#"><i class="fa-solid fa-link"></i> Developer Hub</a></li>
+                <li><a href="#"><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
+                <li><a href="#"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Connect</h3>
+            <div class="fbox3">
+              <a href="#"><i class="fa-brands fa-github"></i></a>
+              <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#"><i class="fa-solid fa-globe"></i></a>
+            </div>
+            <p class="footer-tagline">
+              Build. Track. Grow.
+            </p>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+
+      <div class="copy">
+        <div class="wrapper">
+    
+          <div class="copyright">
+            <p>
+              © 2026 DevBase. Designed & Developed by Smaranika.
+            </p>
+          </div>
+
+          <div class="policy">
+            <a href="#">Privacy Policy</a>
+            <p>&#124;</p>
+            <a href="#">Terms & Conditions</a>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/js/timer.js"></script>
+  </body>
+</html>

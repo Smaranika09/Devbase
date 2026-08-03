@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opportunity Tracker | DevBase</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+
+
+  <body>
+
+    <header>
+      <div class="header">
+        <div class="wrapper">
+
+          <div class="logo">
+            <a href="/dashboard">
+              <img src="images/devbase-logo.png" alt="DevBase Logo">
+            </a>
+          </div>
+
+          <nav>
+            <ul>
+              <li><a href="/dashboard" target="_blank">Home</a></li>
+              <li><a href="/goals" target="_blank">Goals</a></li>
+              <li><a href="/opportunities" target="_blank">Opportunities</a></li>
+              <li><a href="/projects" target="_blank">Projects</a></li>
+              <li><a href="/resumes" target="_blank">Resumes</a></li>
+              <li><a href="/ideas" target="_blank">Ideas</a></li>
+              <li><a href="/journal" target="_blank">Journal</a></li>
+              <li><a href="/hub" target="_blank">Hub</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </nav>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </header>
+
+    
+    <section class="opportunity-tracker">
+      <div class="wrapper">
+
+        <div class="page-heading">
+          <h1>Opportunity Tracker</h1>
+          <p>
+            Track internships, jobs, hackathons, fellowships and competitions from one workspace.
+          </p>
+        </div>
+
+        <div class="opportunity-list">
+
+          <% if(opportunities.length===0){ %>
+          <div class="empty-opportunity">
+            <i class="fa-solid fa-briefcase"></i>
+            <h2>No Opportunities Yet</h2>
+            <p>Create your first opportunity below.</p>
+          </div>
+          <% } %>
+
+          <% opportunities.forEach(opportunity=>{ %>
+          <div class="opportunity-card">
+            <div class="opportunity-header">
+              <div>
+                <h3><%= opportunity.company %></h3>
+                <h4><%= opportunity.role %></h4>
+              </div>
+              <div class="card-badges">
+                <span class="type-tag">
+                  <%= opportunity.type %>
+                </span>
+                <span class="priority <%= opportunity.priority.toLowerCase() %>">
+                  <%= opportunity.priority %>
+                </span>
+              </div>
+            </div>
+
+            <div class="opportunity-body">
+              <p>
+                <strong>Deadline :</strong>
+                <%= opportunity.deadline.toLocaleDateString("en-GB",{
+                  day:"numeric",
+                  month:"long",
+                  year:"numeric"
+                }) %>
+              </p>
+              <p>
+                <strong>Resume Used:</strong>
+                <%= opportunity.resumeUsed || "Not Added" %>
+              </p>
+              <p>
+                <strong>Notes :</strong>
+                <%= opportunity.notes || "No Notes" %>
+              </p>
+            </div>
+
+            <div class="progress-section">
+              <h4>Application Progress</h4>
+              <div class="stage-list">
+                <% opportunity.stages.forEach((stage, index) => { %>
+                  <form action="/opportunities/stage/<%= opportunity._id %>/<%= index %>" method="POST">
+                    <label>
+                      <input type="checkbox" onchange="this.form.submit()"  <%= stage.completed ? "checked" : "" %> >
+                      <%= stage.name %>
+                    </label>
+                  </form>
+                <% }) %>
+              </div>
+            </div>
+
+            <div class="opportunity-footer">
+              <a href="/opportunities/bookmark/<%= opportunity._id %>" class="bookmark-btn">
+                <% if(opportunity.bookmarked){ %>
+                  <i class="fa-solid fa-bookmark"></i>
+                <% } else{ %>
+                  <i class="fa-regular fa-bookmark"></i>
+                <% } %>
+              </a>
+              <a href="/opportunities/delete/<%= opportunity._id %>" class="delete-btn">
+                Delete
+              </a>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+
+        <div class="add-opportunity-section">
+          <h2>Add Opportunity</h2>
+          <p>
+            Track a new internship, job, hackathon, fellowship or competition.
+          </p>
+          <form action="/opportunities" method="POST" class="opportunity-form">
+            <input type="text" name="company" placeholder="Company Name" required >
+            <input type="text" name="role" placeholder="Role" required>
+            <select name="type" required>
+              <option value="">Select Type</option>
+              <option value="Internship">Internship</option>
+              <option value="Job">Job</option>
+              <option value="Hackathon">Hackathon</option>
+              <option value="Fellowship">Fellowship</option>
+              <option value="Competition">Competition</option>
+            </select>
+            <select name="priority" required>
+              <option value="">Select Priority</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+            <input type="date" name="deadline" required>
+            <input type="text" name="resumeUsed" placeholder="Resume Used (e.g. Resume Version1)">
+            <textarea name="notes" placeholder="Notes..." rows="5"></textarea>
+            <button type="submit" class="create-opportunity-btn">
+              <i class="fa-solid fa-plus"></i>
+              Create Opportunity
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+
+    <footer>
+      <div class="footer">
+        <div class="wrapper">
+
+          <div class="fbox">
+            <h2>DevBase</h2>
+            <p>
+              DevBase is your complete developer workspace designed to help
+              you organize projects, manage opportunities, track goals,
+              store resumes, capture ideas, and document your growth—all in one place.
+            </p>
+          </div>
+
+          <div class="fbox">
+            <h3>Workspace</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li><a href="#"><i class="fa-solid fa-briefcase"></i> Opportunities</a></li>
+                <li><a href="#"><i class="fa-solid fa-folder-open"></i> Projects</a></li>
+                <li><a href="#"><i class="fa-solid fa-file-lines"></i> Resumes</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Resources</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-lightbulb"></i> Ideas</a></li>
+                <li><a href="#"><i class="fa-solid fa-book-open"></i> Journal</a></li>
+                <li><a href="#"><i class="fa-solid fa-link"></i> Developer Hub</a></li>
+                <li><a href="#"><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
+                <li><a href="#"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Connect</h3>
+            <div class="fbox3">
+              <a href="#"><i class="fa-brands fa-github"></i></a>
+              <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#"><i class="fa-solid fa-globe"></i></a>
+            </div>
+            <p class="footer-tagline">
+              Build. Track. Grow.
+            </p>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+
+      <div class="copy">
+        <div class="wrapper">
+    
+          <div class="copyright">
+            <p>
+              © 2026 DevBase. Designed & Developed by Smaranika.
+            </p>
+          </div>
+
+          <div class="policy">
+            <a href="#">Privacy Policy</a>
+            <p>&#124;</p>
+            <a href="#">Terms & Conditions</a>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>

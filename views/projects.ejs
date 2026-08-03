@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Vault | DevBase</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+
+
+  <body>
+
+    <header>
+      <div class="header">
+        <div class="wrapper">
+
+          <div class="logo">
+            <a href="/dashboard">
+              <img src="images/devbase-logo.png" alt="DevBase Logo">
+            </a>
+          </div>
+
+          <nav>
+            <ul>
+              <li><a href="/dashboard" target="_blank">Home</a></li>
+              <li><a href="/goals" target="_blank">Goals</a></li>
+              <li><a href="/opportunities" target="_blank">Opportunities</a></li>
+              <li><a href="/projects" target="_blank">Projects</a></li>
+              <li><a href="/resumes" target="_blank">Resumes</a></li>
+              <li><a href="/ideas" target="_blank">Ideas</a></li>
+              <li><a href="/journal" target="_blank">Journal</a></li>
+              <li><a href="/hub" target="_blank">Hub</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </nav>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="project-vault">
+      <div class="wrapper">
+
+        <div class="page-heading">
+          <h1>Project Vault</h1>
+          <p>
+            Organize your portfolio projects, GitHub repositories and project files in one place.
+          </p>
+        </div>
+
+        <div class="project-overview">
+          <div class="overview-card">
+            <h2><%= totalProjects %></h2>
+            <p>Total Projects</p>
+          </div>
+          <div class="overview-card">
+            <h2><%= totalCategories %></h2>
+            <p>Categories</p>
+          </div>
+          <div class="overview-card">
+            <h2><%= githubProjects %></h2>
+            <p>GitHub Linked</p>
+          </div>
+          <div class="overview-card">
+            <h2><%= zipProjects %></h2>
+            <p>ZIP Uploaded</p>
+          </div>
+        </div>
+
+        <div class="add-project-section">
+          <h2>Add Project</h2>
+
+          <form action="/projects" method="POST" enctype="multipart/form-data" class="project-form" >
+            <input type="text" name="projectName" placeholder="Project Name" required>
+            <input type="text" name="category" placeholder="Category (e.g. Web Application, AI/ML, Desktop, Portfolio...)" required>
+            <input type="url" name="githubLink" placeholder="GitHub Repository" >
+            <input type="file" name="zipFile" accept=".zip">
+            <textarea name="techStack" rows="2" placeholder="Tech Stack (comma separated)
+            e.g. HTML, CSS, JavaScript" required></textarea>
+            <textarea name="summary" rows="4" placeholder="Project Summary" required></textarea>
+            <textarea name="about" rows="3" placeholder="About Project" required></textarea>
+            <button type="submit" class="add-project-btn">
+              <i class="fa-solid fa-plus"></i>
+              Add Project
+            </button>
+          </form>
+        </div>
+
+        <div class="project-actions">
+          <form action="/projects" method="GET" class="project-search">
+            <input type="text" name="search" placeholder="Search projects..." value="<%= search %>" >
+            <button type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
+        </div>
+
+        <div class="project-list">
+
+          <% if(projects.length===0){ %>
+            <div class="empty-project">
+              <i class="fa-solid fa-folder-open"></i>
+              <h2>No Projects Yet</h2>
+              <p>
+                Add your first project above.
+              </p>
+            </div>
+          <% } %>
+
+          <% projects.forEach(project=>{ %>
+            <div class="project-card">
+              <div class="project-header">
+                <div>
+                  <h3><%= project.projectName %></h3>
+                  <span class="category-badge">
+                    <%= project.category %>
+                  </span>
+                </div>
+              </div>
+
+              <div class="project-body">
+                <div class="tech-stack">
+                  <% project.techStack.forEach(tech=>{ %>
+                    <span class="tech-badge">
+                      <%= tech %>
+                    </span>
+                  <% }) %>
+                </div>
+                <div class="about-project">
+                  <h4>About Project</h4>
+                  <p>
+                    <%= project.aboutproject %>
+                  </p>
+                </div>
+              </div>
+              
+              <div class="project-links">
+                <% if(project.githubLink){ %>
+                  <p>
+                    <strong>GitHub: </strong>
+                    <a href="<%= project.githubLink %>" target="_blank">
+                      Visit Repository
+                    </a>
+                  </p>
+                <% } %>
+
+                <% if(project.zipFile){ %>
+                  <p>
+                    <strong>ZIP: </strong>
+                    <a href="/uploads/projects/<%= project.zipFile %>" download >
+                      Download ZIP
+                    </a>
+                  </p>
+                <% } %>
+              </div>
+
+              <div class="project-buttons">
+                <a href="/projects/delete/<%= project._id %>" class="delete-btn" onclick="return confirm('Delete this project?')">
+                  Delete
+                </a>
+              </div>
+            </div>
+          <% }) %>
+
+        </div>
+        
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer">
+        <div class="wrapper">
+
+          <div class="fbox">
+            <h2>DevBase</h2>
+            <p>
+              DevBase is your complete developer workspace designed to help
+              you organize projects, manage opportunities, track goals,
+              store resumes, capture ideas, and document your growth—all in one place.
+            </p>
+          </div>
+
+          <div class="fbox">
+            <h3>Workspace</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li><a href="#"><i class="fa-solid fa-briefcase"></i> Opportunities</a></li>
+                <li><a href="#"><i class="fa-solid fa-folder-open"></i> Projects</a></li>
+                <li><a href="#"><i class="fa-solid fa-file-lines"></i> Resumes</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Resources</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-lightbulb"></i> Ideas</a></li>
+                <li><a href="#"><i class="fa-solid fa-book-open"></i> Journal</a></li>
+                <li><a href="#"><i class="fa-solid fa-link"></i> Developer Hub</a></li>
+                <li><a href="#"><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
+                <li><a href="#"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Connect</h3>
+            <div class="fbox3">
+              <a href="#"><i class="fa-brands fa-github"></i></a>
+              <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#"><i class="fa-solid fa-globe"></i></a>
+            </div>
+            <p class="footer-tagline">
+              Build. Track. Grow.
+            </p>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+
+      <div class="copy">
+        <div class="wrapper">
+    
+          <div class="copyright">
+            <p>
+              © 2026 DevBase. Designed & Developed by Smaranika.
+            </p>
+          </div>
+
+          <div class="policy">
+            <a href="#">Privacy Policy</a>
+            <p>&#124;</p>
+            <a href="#">Terms & Conditions</a>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>

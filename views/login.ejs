@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | DevBase</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+
+
+  <body>
+
+    <section class="auth-page">
+      <div class="wrapper">
+
+        <div class="auth-card">
+          <div class="page-heading">
+            <h1>Welcome Back</h1>
+            <p>
+              Log in to continue your DevBase journey.
+            </p>
+          </div>
+
+          <form action="/login" method="POST" class="auth-form">
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="auth-btn">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              Login
+            </button>
+          </form>
+
+          <div class="auth-divider">
+            <span>OR</span>
+          </div>
+
+          <div class="auth-footer">
+            <p>
+              Don't have an account?
+              <a href="/signup">
+                Create Account
+              </a>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <% if(error) { %>
+      <script>
+        alert("<%= error %>");
+      </script>
+    <% } %>
+  </body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Setup | DevBase</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+    
+    
+  <body>
+    <section class="profile-setup">
+      <div class="wrapper">
+
+        <div class="profile-card">
+          <div class="page-heading">
+            <h1>Complete Your Profile</h1>
+            <p>
+              Set up your workspace once.
+              Everything across DevForge will automatically use this information.
+            </p>
+          </div>
+
+          <form action="/profile-setup" method="POST" class="profile-form">
+
+            <div class="profile-avatar">
+              <img src="/images/avatar.png" alt="Profile">
+              <h4>Developer Profile</h4>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="name" placeholder="Enter your full name" value="<%= user ? user.name : '' %>">
+              </div>
+
+              <div class="form-group">
+                <label>Target Role</label>
+                <input type="text" name="targetRole" placeholder="Frontend Developer" value="<%= user ? user.targetRole : '' %>">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>College</label>
+                <input type="text" name="college" placeholder="Your College" value="<%= user ? user.college : '' %>">
+              </div>
+
+              <div class="form-group">
+                <label>Graduation Year</label>
+                <input type="number" name="graduationYear" placeholder="xxxx" value="<%= user ? user.graduationYear : '' %>">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Bio</label>
+              <textarea name="bio" placeholder="Tell us about yourself..." value="<%= user ? user.bio : '' %>"></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>GitHub</label>
+                <input type="url" name="github" placeholder="https://github.com/username" value="<%= user ? user.github : '' %>">
+              </div>
+
+              <div class="form-group">
+                <label>LinkedIn</label>
+                <input type="url" name="linkedin" placeholder="https://linkedin.com/in/username" value="<%= user ? user.linkedin : '' %>">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Portfolio Website</label>
+              <input type="url" name="portfolio" placeholder="https://yourportfolio.com" value="<%= user ? user.portfolio : '' %>">
+            </div>
+
+            <div class="form-group">
+              <label>Skills</label>
+              <input type="text" name="skills" placeholder="Java, Node.js, MongoDB..." value="<%= user ? user.skills : '' %>">
+            </div>
+
+            <button type="submit" class="save-profile-btn">
+              <i class="fa-solid fa-floppy-disk"></i>
+              Save Profile
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+  </body>
+</html>

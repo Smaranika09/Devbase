@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Vault | DevBase</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+
+
+  <body>
+
+    <header>
+      <div class="header">
+        <div class="wrapper">
+
+          <div class="logo">
+            <a href="/dashboard">
+              <img src="images/devbase-logo.png" alt="DevBase Logo">
+            </a>
+          </div>
+
+          <nav>
+            <ul>
+              <li><a href="/dashboard" target="_blank">Home</a></li>
+              <li><a href="/goals" target="_blank">Goals</a></li>
+              <li><a href="/opportunities" target="_blank">Opportunities</a></li>
+              <li><a href="/projects" target="_blank">Projects</a></li>
+              <li><a href="/resumes" target="_blank">Resumes</a></li>
+              <li><a href="/ideas" target="_blank">Ideas</a></li>
+              <li><a href="/journal" target="_blank">Journal</a></li>
+              <li><a href="/hub" target="_blank">Hub</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </nav>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="resume-vault">
+      <div class="wrapper">
+
+        <div class="page-heading">
+          <h1>Resume Vault</h1>
+          <p>
+            Store, organize and manage multiple resumes for different career opportunities.
+          </p>
+        </div>
+
+        <div class="resume-overview">
+          <div class="overview-card">
+            <h2><%= totalResumes %></h2>
+            <p>Total Resumes</p>
+          </div>
+          <div class="overview-card">
+            <h2><%= latestResume ? latestResume.resumeName : "--" %></h2>
+            <p>Latest Resume</p>
+          </div>
+          <div class="overview-card">
+            <h2>
+              <%= latestResume ? latestResume.createdAt.toLocaleDateString("en-GB") : "--" %>
+            </h2>
+            <p>Recent Upload</p>
+          </div>
+          <div class="overview-card">
+            <h2>
+              <%= latestResume ? latestResume.updatedAt.toLocaleDateString("en-GB") : "--" %>
+            </h2>
+            <p>Last Updated</p>
+          </div>
+        </div>
+
+        <div class="resume-actions">
+          <form action="/resumes" method="POST" enctype="multipart/form-data" class="resume-upload-form">
+            <input type="text" name="resumeName" placeholder="Resume Name (e.g. Backend Resume)" required>
+            <input type="text" name="targetRole" placeholder="Target Role" required>
+            <textarea name="notes" placeholder="Notes"></textarea>
+            <input type="file" name="resumeFile" accept=".pdf" required>
+            <button type="submit" class="upload-btn">
+              <i class="fa-solid fa-upload"></i>
+              Upload Resume
+            </button>
+          </form>
+
+          <form action="/resumes" method="GET">
+            <input type="text" name="search" class="resume-search" placeholder="Search by resume name or target role..." value="<%= search || '' %>">
+          </form>
+        </div>
+
+        <div class="resume-list">
+
+          <% if(resumes.length===0){ %>
+          <div class="empty-resume">
+            <i class="fa-solid fa-file-lines"></i>
+            <h2>No Resumes Found</h2>
+            <p>
+              Upload your first resume to start managing different resumes for different applications.
+            </p>
+          </div>
+          <% } %>
+
+          <% resumes.forEach(resume=>{ %>
+          <div class="resume-card">
+            <div class="resume-header">
+              <div>
+                <h3>
+                  <%= resume.resumeName %>
+                  <% if(latestResume && latestResume._id.toString()===resume._id.toString()){ %>
+                  <span class="latest-badge">
+                    Latest
+                  </span>
+                  <% } %>
+                </h3>
+                <p>
+                  Target Role :
+                  <%= resume.targetRole %>
+                </p>
+              </div>
+            </div>
+            <div class="resume-info">
+              <p>
+                <strong>Uploaded :</strong>
+                <%= resume.createdAt.toLocaleDateString("en-GB") %>
+              </p>
+              <p>
+                <strong>Last Updated :</strong>
+                <%= resume.updatedAt.toLocaleDateString("en-GB") %>
+              </p>
+              <p>
+                <strong>Notes :</strong>
+                <%= resume.notes || "No Notes" %>
+              </p>
+            </div>
+            <div class="resume-buttons">
+              <a
+                href="/uploads/resumes/<%= resume.resumeFile %>"
+                target="_blank">
+                Preview
+              </a>
+              <a
+                href="/uploads/resumes/<%= resume.resumeFile %>"
+                download>
+                Download
+              </a>
+              <a
+                href="/resumes/delete/<%= resume._id %>"
+                class="delete-btn">
+                Delete
+              </a>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer">
+        <div class="wrapper">
+
+          <div class="fbox">
+            <h2>DevBase</h2>
+            <p>
+              DevBase is your complete developer workspace designed to help
+              you organize projects, manage opportunities, track goals,
+              store resumes, capture ideas, and document your growth—all in one place.
+            </p>
+          </div>
+
+          <div class="fbox">
+            <h3>Workspace</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li><a href="#"><i class="fa-solid fa-briefcase"></i> Opportunities</a></li>
+                <li><a href="#"><i class="fa-solid fa-folder-open"></i> Projects</a></li>
+                <li><a href="#"><i class="fa-solid fa-file-lines"></i> Resumes</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Resources</h3>
+            <div class="fbox2">
+              <ul>
+                <li><a href="#"><i class="fa-solid fa-lightbulb"></i> Ideas</a></li>
+                <li><a href="#"><i class="fa-solid fa-book-open"></i> Journal</a></li>
+                <li><a href="#"><i class="fa-solid fa-link"></i> Developer Hub</a></li>
+                <li><a href="#"><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
+                <li><a href="#"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fbox">
+            <h3>Connect</h3>
+            <div class="fbox3">
+              <a href="#"><i class="fa-brands fa-github"></i></a>
+              <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#"><i class="fa-solid fa-globe"></i></a>
+            </div>
+            <p class="footer-tagline">
+              Build. Track. Grow.
+            </p>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+
+      <div class="copy">
+        <div class="wrapper">
+    
+          <div class="copyright">
+            <p>
+              © 2026 DevBase. Designed & Developed by Smaranika.
+            </p>
+          </div>
+
+          <div class="policy">
+            <a href="#">Privacy Policy</a>
+            <p>&#124;</p>
+            <a href="#">Terms & Conditions</a>
+          </div>
+
+          <div class="c"></div>
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>
